@@ -1,4 +1,4 @@
-import json
+import hashlib
 import os
 from typing import List
 
@@ -13,6 +13,12 @@ chat_router = APIRouter(prefix="/chat", tags=["chat"])
 
 STREAM_DELAY = 1
 RETRY_TIMEOUT = 15000
+
+
+def calculate_md5(string):
+    md5_hash = hashlib.md5()
+    md5_hash.update(string.encode("utf-8"))
+    return md5_hash.hexdigest()
 
 
 load_dotenv()  # take environment variables from .env.
@@ -43,13 +49,12 @@ def completion(
         if len(chunk.choices) > 0 and chunk.choices[0].delta.content:
             content = chunk.choices[0].delta.content
             # sys.stdout.write(content)
-            yield f"event: add\nretry: {RETRY_TIMEOUT}\ndata: {json.dumps(content,ensure_ascii=False)}\nid: {1}\n\n"
+            yield f"event: add\nretry: {RETRY_TIMEOUT}\ndata: {content}\nid: 1\n\n"
     yield "event: finish\n\n"
 
 
 @chat_router.get("/stream")
 async def event_stream(prompt: str):
-    print(prompt)
     headers = {
         "Content-Type": "text/event-stream; charset=utf-8",
         "Cache-Control": "no-cache",
