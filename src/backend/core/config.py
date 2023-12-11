@@ -1,7 +1,6 @@
 import secrets
-from typing import ClassVar
+from typing import ClassVar, List
 
-from pydantic import HttpUrl
 from pydantic_settings import BaseSettings
 
 
@@ -13,7 +12,7 @@ class Settings(BaseSettings):
     # cors_origins is a JSON-formatted list of origins
     # e.g: '["http://localhost", "http://localhost:4200", "http://localhost:3000", \
     # "http://localhost:8080", "http://local.dockertoolbox.tiangolo.com"]'
-    cors_origins: ClassVar[list[HttpUrl]] = []
+    cors_origins: ClassVar[List[str]] = ["*"]
     # db_url = "postgresql://localhost"
     db_url: ClassVar[str] = "sqlite:///./sql_app.db"
     echo_sql: ClassVar[bool] = True

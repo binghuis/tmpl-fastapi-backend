@@ -8,7 +8,7 @@ authors = [
 dependencies = [
     "fastapi>=0.104.1",
     "uvicorn[standard]>=0.24.0.post1",
-    "pydantic-settings>=2.1.0",
+    "pydantic-settings>=2.1.0"
 ]
 requires-python = ">=3.12"
 readme = "README.md"
@@ -19,5 +19,4 @@ dev = "python src/backend/main.py"
 
 [tool.ruff]
 exclude = [
-    ".venv",
 ]
