@@ -3,7 +3,7 @@ import os
 from typing import List
 
 from dotenv import load_dotenv
-from fastapi import APIRouter, Request
+from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
 from openai import AzureOpenAI
 from openai.types.chat.chat_completion_message_param import ChatCompletionMessageParam
@@ -48,9 +48,10 @@ def completion(
 
 
 @chat_router.get("/stream")
-async def event_stream(request: Request):
+async def event_stream(prompt: str):
+    print(prompt)
     headers = {
         "Content-Type": "text/event-stream; charset=utf-8",
         "Cache-Control": "no-cache",
     }
-    return StreamingResponse(completion("你好"), headers=headers)
+    return StreamingResponse(completion(prompt), headers=headers)
