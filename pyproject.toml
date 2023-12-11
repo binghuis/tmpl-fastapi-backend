@@ -8,7 +8,9 @@ authors = [
 dependencies = [
     "fastapi>=0.104.1",
     "uvicorn[standard]>=0.24.0.post1",
-    "pydantic-settings>=2.1.0"
+    "pydantic-settings>=2.1.0",
+    "httpx>=0.25.2",
+    "pytest>=7.4.3",
 ]
 requires-python = ">=3.12"
 readme = "README.md"
@@ -16,6 +18,7 @@ license = {text = "MIT"}
 
 [tool.pdm.scripts]
 dev = "python src/backend/main.py"
+test = "pytest"
 
 [tool.ruff]
 exclude = [
