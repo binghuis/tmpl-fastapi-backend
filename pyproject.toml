@@ -1,0 +1,23 @@
+[project]
+name = "backend"
+version = "0.0.1"
+description = ""
+authors = [
+    {name = "songbinghui", email = "soongbinghui@gmail.com"},
+]
+dependencies = [
+    "fastapi>=0.104.1",
+    "uvicorn[standard]>=0.24.0.post1",
+    "pydantic-settings>=2.1.0",
+]
+requires-python = ">=3.12"
+readme = "README.md"
+license = {text = "MIT"}
+
+[tool.pdm.scripts]
+dev = "python src/backend/main.py"
+
+[tool.ruff]
+exclude = [
+    ".venv",
+]
