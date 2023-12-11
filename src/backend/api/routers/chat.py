@@ -15,6 +15,7 @@ def get_server_time():
     return time.ctime()
 
 
+# https://zh.javascript.info/server-sent-events
 @chat_router.get("/stream")
 async def event_stream(request: Request):
     async def event_generator():
