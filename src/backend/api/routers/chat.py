@@ -49,8 +49,8 @@ def completion(
         if len(chunk.choices) > 0 and chunk.choices[0].delta.content:
             content = chunk.choices[0].delta.content
             # sys.stdout.write(content)
-            yield f"event: add\nretry: {RETRY_TIMEOUT}\ndata: {content}\nid: 1\n\n"
-    yield "event: finish\n\n"
+            yield f"event: message\ndata: {content}\nid: 1\n\n"
+    yield "event: end\ndata: \nid: 1\n\n"
 
 
 @chat_router.get("/stream")
