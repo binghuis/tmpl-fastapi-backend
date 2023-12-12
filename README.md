@@ -7,5 +7,3 @@
 > [It's 2023, how do you choose between "MySQL" and "Postgres"?](https://news.ycombinator.com/item?id=35906604)
 
 SQL client：[Beekeeper Studio](https://github.com/beekeeper-studio/beekeeper-studio/releases)
-
-[What's the difference between "text/event-stream" and "application/stream+json"](https://stackoverflow.com/questions/52098863/whats-the-difference-between-text-event-stream-and-application-streamjson)

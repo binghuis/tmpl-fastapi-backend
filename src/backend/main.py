@@ -6,7 +6,6 @@ from backend.api import routers
 from backend.core.config import settings
 
 app = FastAPI()
-
 app.include_router(routers)
 
 if len(settings.cors_origins) > 0:

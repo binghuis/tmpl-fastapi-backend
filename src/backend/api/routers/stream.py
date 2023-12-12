@@ -1,5 +1,7 @@
 import hashlib
+import json
 import os
+import time
 from typing import List
 
 from dotenv import load_dotenv
@@ -8,8 +10,7 @@ from fastapi.responses import StreamingResponse
 from openai import AzureOpenAI
 from openai.types.chat.chat_completion_message_param import ChatCompletionMessageParam
 
-chat_router = APIRouter(prefix="/chat", tags=["chat"])
-
+chat_router = APIRouter(prefix="/stream", tags=["流式接口"])
 
 STREAM_DELAY = 1
 RETRY_TIMEOUT = 15000
@@ -53,10 +54,54 @@ def completion(
     yield "event: end\ndata: \nid: 1\n\n"
 
 
-@chat_router.get("/stream")
+@chat_router.get("/sse")
 async def event_stream(prompt: str):
     headers = {
         "Content-Type": "text/event-stream; charset=utf-8",
         "Cache-Control": "no-cache",
     }
     return StreamingResponse(completion(prompt), headers=headers)
+
+
+@chat_router.get("/json")
+async def stream_json():
+    def completion():
+        data = [
+            {"id": 1, "data": "你"},
+            {"id": 2, "data": "好"},
+            {"id": 3, "data": "开"},
+            {"id": 4, "data": "发"},
+            {"id": 5, "data": "者"},
+        ]
+        for item in data:
+            yield json.dumps(item, ensure_ascii=False)
+            time.sleep(1)
+
+    headers = {
+        "Content-Type": "application/stream+json",
+        "Cache-Control": "no-cache",
+    }
+
+    return StreamingResponse(completion(), headers=headers)
+
+
+@chat_router.get("/ndjson")
+async def stream_ndjson():
+    def completion():
+        data = [
+            {"id": 1, "data": "你"},
+            {"id": 2, "data": "好"},
+            {"id": 3, "data": "开"},
+            {"id": 4, "data": "发"},
+            {"id": 5, "data": "者"},
+        ]
+        for item in data:
+            yield f"{json.dumps(item,ensure_ascii=False)}\n"
+            time.sleep(1)
+
+    headers = {
+        "Content-Type": "application/x-ndjson",
+        "Cache-Control": "no-cache",
+    }
+
+    return StreamingResponse(completion(), headers=headers)
