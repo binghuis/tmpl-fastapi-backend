@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from backend.core.config import settings
+from server.core.config import settings
 
 from .routers import chat_router
 

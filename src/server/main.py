@@ -2,8 +2,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from backend.api import routers
-from backend.core.config import settings
+from server.api import routers
+from server.core.config import settings
 
 app = FastAPI()
 app.include_router(routers)
