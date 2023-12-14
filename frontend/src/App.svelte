@@ -1,6 +1,6 @@
 <script lang="ts">
   import svelteLogo from "./assets/svelte.svg";
-  import Chat from "./lib/Chat.svelte";
+  import Chat from "./components/Chat.svelte";
   import viteLogo from "/vite.svg";
 </script>
 
