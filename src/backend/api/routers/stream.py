@@ -1,7 +1,7 @@
 import hashlib
 import json
-import os
 import time
+from os import environ, path
 from typing import List
 
 from dotenv import load_dotenv
@@ -26,9 +26,9 @@ load_dotenv()  # take environment variables from .env.
 
 
 client = AzureOpenAI(
-    api_version=os.environ["OPENAI_API_VERSION"],
-    azure_endpoint=os.environ["AZURE_OPENAI_ENDPOINT"],
-    api_key=os.environ["AZURE_OPENAI_API_KEY"],
+    api_version=environ["OPENAI_API_VERSION"],
+    azure_endpoint=environ["AZURE_OPENAI_ENDPOINT"],
+    api_key=environ["AZURE_OPENAI_API_KEY"],
     azure_deployment="gpt-35-turbo",
 )
 
@@ -63,19 +63,19 @@ async def event_stream(prompt: str):
     return StreamingResponse(completion(prompt), headers=headers)
 
 
+relative_path = "./demo.txt"
+file_path = path.join(path.dirname(__file__), relative_path)
+
+
 @chat_router.get("/json")
 async def stream_json():
     def completion():
-        data = [
-            {"id": 1, "data": "你"},
-            {"id": 2, "data": "好"},
-            {"id": 3, "data": "开"},
-            {"id": 4, "data": "发"},
-            {"id": 5, "data": "者"},
-        ]
-        for item in data:
-            yield json.dumps(item, ensure_ascii=False)
-            time.sleep(1)
+        with open(file_path, "r") as file:
+            i = 0
+            for line in file:
+                yield json.dumps({"id": i, "data": line}, ensure_ascii=False)
+                time.sleep(0.1)
+                i += 1
 
     headers = {
         "Content-Type": "application/stream+json",
@@ -88,16 +88,12 @@ async def stream_json():
 @chat_router.get("/ndjson")
 async def stream_ndjson():
     def completion():
-        data = [
-            {"id": 1, "data": "你"},
-            {"id": 2, "data": "好"},
-            {"id": 3, "data": "开"},
-            {"id": 4, "data": "发"},
-            {"id": 5, "data": "者"},
-        ]
-        for item in data:
-            yield f"{json.dumps(item,ensure_ascii=False)}\n"
-            time.sleep(1)
+        with open(file_path, "r") as file:
+            i = 0
+            for line in file:
+                yield json.dumps({"id": i, "data": line}, ensure_ascii=False) + "\n"
+                time.sleep(0.1)
+                i += 1
 
     headers = {
         "Content-Type": "application/x-ndjson",
@@ -105,3 +101,7 @@ async def stream_ndjson():
     }
 
     return StreamingResponse(completion(), headers=headers)
+
+
+if __name__ == "__main__":
+    pass
